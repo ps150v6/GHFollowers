@@ -49,7 +49,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
 
         return tabBar
     }
-    
+
     func configureNavigationBar() {
         UINavigationBar.appearance().tintColor = .systemGreen
     }
