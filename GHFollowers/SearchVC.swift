@@ -13,17 +13,41 @@ class SearchVC: UIViewController {
     let callToActionButton = GFButton(
         backgroundColor: .systemGreen, title: "Get Followers")
 
+    var isUsernameEntered: Bool {
+        guard let text = usernameTextField.text else { return false }
+        return !text.isEmpty
+    }
+
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = .systemBackground
         configureLogoImageView()
         configureTextField()
         configureCallToActionButton()
+        createDismissKeyboardTapGesture()
     }
 
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         navigationController?.isNavigationBarHidden = true
+    }
+
+    func createDismissKeyboardTapGesture() {
+        let tap = UITapGestureRecognizer(
+            target: self.view, action: #selector(UIView.endEditing(_:)))
+        view.addGestureRecognizer(tap)
+    }
+
+    @objc func pushFollowerListVC() {
+        guard isUsernameEntered else {
+            // TODO: add a custom alert here
+            print("No username")
+            return
+        }
+        let followerListVC = FollowerListVC()
+        followerListVC.username = usernameTextField.text
+        followerListVC.title = usernameTextField.text
+        navigationController?.pushViewController(followerListVC, animated: true)
     }
 
     func configureLogoImageView() {
@@ -42,6 +66,7 @@ class SearchVC: UIViewController {
 
     func configureTextField() {
         view.addSubview(usernameTextField)
+        usernameTextField.delegate = self
 
         NSLayoutConstraint.activate([
             usernameTextField.topAnchor.constraint(
@@ -56,6 +81,8 @@ class SearchVC: UIViewController {
 
     func configureCallToActionButton() {
         view.addSubview(callToActionButton)
+        callToActionButton.addTarget(
+            self, action: #selector(pushFollowerListVC), for: .touchUpInside)
 
         NSLayoutConstraint.activate([
             callToActionButton.bottomAnchor.constraint(
@@ -69,7 +96,15 @@ class SearchVC: UIViewController {
     }
 }
 
-#Preview {
-    let searchVC = SearchVC()
-    return searchVC
+extension SearchVC: UITextFieldDelegate {
+    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+        textField.resignFirstResponder()
+        pushFollowerListVC()
+        return true
+    }
 }
+
+//#Preview {
+//    let searchVC = SearchVC()
+//    return searchVC
+//}
