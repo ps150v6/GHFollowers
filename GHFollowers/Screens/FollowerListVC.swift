@@ -16,16 +16,18 @@ class FollowerListVC: UIViewController {
         navigationController?.navigationBar.prefersLargeTitles = true
 
         NetworkManager.shared.getFollowers(for: username, page: 1) {
-            [weak self] followers, errorMessage in
-            guard let followers = followers else {
-                self?.presentGFAlertOnMainThread(
-                    title: "Bad Stuff Happened",
-                    message: errorMessage?.rawValue ?? "", buttonTitle: "OK")
-                return
-            }
+            [weak self] result in
 
-            print("Followers.count = \(followers.count)")
-            print("Followers = \(followers)")
+            switch result {
+            case .success(let followers):
+                print("Followers.count = \(followers.count)")
+                print("Followers = \(followers)")
+            case .failure(let error):
+                self?.presentGFAlertOnMainThread(
+                    title: "Bad Stuff Happened", message: error.rawValue,
+                    buttonTitle: "OK")
+
+            }
         }
     }
 
