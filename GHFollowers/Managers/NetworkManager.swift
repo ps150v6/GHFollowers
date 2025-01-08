@@ -15,11 +15,11 @@ class NetworkManager {
     private init() {}
 
     func getFollowers(
-        for username: String, page: Int,
+        for username: String, page: Int, perPage: Int,
         completion: @escaping (Result<[Follower], GFError>) -> Void
     ) {
         let endpoint =
-            "\(baseURL)/\(username)/followers?per_page=100&page=\(page)"
+            "\(baseURL)/\(username)/followers?per_page=\(perPage)&page=\(page)"
 
         guard let url = URL(string: endpoint) else {
             completion(.failure(.invalidUsername))
@@ -55,30 +55,31 @@ class NetworkManager {
 
         task.resume()
     }
-    
-    func downloadImage(from urlString: String, completion: @escaping (UIImage) -> Void) {
+
+    func downloadImage(
+        from urlString: String, completion: @escaping (UIImage) -> Void
+    ) {
         let cacheKey = NSString(string: urlString)
-        
+
         if let image = cache.object(forKey: cacheKey) {
-            print("Found a cached image!")
             completion(image)
             return
         }
-        
+
         guard let url = URL(string: urlString) else { return }
-        
-        let task = URLSession.shared.dataTask(with: url) { data, response, error in
+
+        let task = URLSession.shared.dataTask(with: url) {
+            data, response, error in
             guard error == nil else { return }
             guard let response = response as? HTTPURLResponse else { return }
             guard response.statusCode == 200 else { return }
             guard let data = data else { return }
             guard let image = UIImage(data: data) else { return }
-            
+
             self.cache.setObject(image, forKey: cacheKey)
-            print("Downloaded image and set cache in background thread...: \(Thread.current)")
             completion(image)
         }
-        
+
         task.resume()
     }
 }

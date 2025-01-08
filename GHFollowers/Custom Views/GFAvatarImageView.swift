@@ -30,7 +30,6 @@ class GFAvatarImageView: UIImageView {
     func setImage(from urlString: String) {
         NetworkManager.shared.downloadImage(from: urlString) { [weak self] image in
             DispatchQueue.main.async { [weak self] in
-                print("In main thread: \(Thread.current)... updating image view")
                 self?.image = image
             }
         }
