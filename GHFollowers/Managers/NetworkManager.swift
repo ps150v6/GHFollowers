@@ -5,11 +5,12 @@
 //  Created by Matthew Rodriguez on 1/6/25.
 //
 
-import Foundation
+import UIKit
 
 class NetworkManager {
     static let shared = NetworkManager()
-    let baseURL = "https://api.github.com/users"
+    let cache = NSCache<NSString, UIImage>()
+    private let baseURL = "https://api.github.com/users"
 
     private init() {}
 
@@ -52,6 +53,32 @@ class NetworkManager {
             }
         }
 
+        task.resume()
+    }
+    
+    func downloadImage(from urlString: String, completion: @escaping (UIImage) -> Void) {
+        let cacheKey = NSString(string: urlString)
+        
+        if let image = cache.object(forKey: cacheKey) {
+            print("Found a cached image!")
+            completion(image)
+            return
+        }
+        
+        guard let url = URL(string: urlString) else { return }
+        
+        let task = URLSession.shared.dataTask(with: url) { data, response, error in
+            guard error == nil else { return }
+            guard let response = response as? HTTPURLResponse else { return }
+            guard response.statusCode == 200 else { return }
+            guard let data = data else { return }
+            guard let image = UIImage(data: data) else { return }
+            
+            self.cache.setObject(image, forKey: cacheKey)
+            print("Downloaded image and set cache in background thread...: \(Thread.current)")
+            completion(image)
+        }
+        
         task.resume()
     }
 }

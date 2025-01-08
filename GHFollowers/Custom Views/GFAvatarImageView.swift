@@ -8,6 +8,7 @@
 import UIKit
 
 class GFAvatarImageView: UIImageView {
+    let cache = NetworkManager.shared.cache
     let placeholderImage = UIImage(named: "avatar-placeholder")!
 
     override init(frame: CGRect) {
@@ -24,6 +25,15 @@ class GFAvatarImageView: UIImageView {
         clipsToBounds = true  // because we have a cornerRadius
         image = placeholderImage
         translatesAutoresizingMaskIntoConstraints = false
+    }
+    
+    func setImage(from urlString: String) {
+        NetworkManager.shared.downloadImage(from: urlString) { [weak self] image in
+            DispatchQueue.main.async { [weak self] in
+                print("In main thread: \(Thread.current)... updating image view")
+                self?.image = image
+            }
+        }
     }
 }
 
