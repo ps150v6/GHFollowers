@@ -21,7 +21,7 @@ class GFAvatarImageView: UIImageView {
     }
 
     private func configure() {
-        layer.cornerRadius = 48
+        layer.cornerRadius = 10
         clipsToBounds = true  // because we have a cornerRadius
         image = placeholderImage
         translatesAutoresizingMaskIntoConstraints = false
@@ -35,10 +35,3 @@ class GFAvatarImageView: UIImageView {
         }
     }
 }
-
-//#Preview {
-//    let imageView = GFAvatarImageView(frame: .zero)
-//    imageView.layer.borderColor = UIColor.systemRed.cgColor
-//    imageView.layer.borderWidth = 2
-//    return imageView
-//}
