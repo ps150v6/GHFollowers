@@ -1,9 +1,10 @@
 //
-//  ErrorMessage.swift
+//  GFError.swift
 //  GHFollowers
 //
-//  Created by Matthew Rodriguez on 1/6/25.
+//  Created by Matthew Rodriguez on 1/9/25.
 //
+
 
 import Foundation
 
