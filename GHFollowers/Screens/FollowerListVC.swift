@@ -52,6 +52,7 @@ class FollowerListVC: UIViewController {
         collectionView.register(
             FollowerCell.self,
             forCellWithReuseIdentifier: FollowerCell.reuseIdentifier)
+        collectionView.alwaysBounceVertical = true 
     }
     
     func configureSearchController() {
@@ -64,7 +65,7 @@ class FollowerListVC: UIViewController {
         navigationItem.hidesSearchBarWhenScrolling = false
     }
 
-    func getFollowers(username: String, page: Int, perPage: Int = 15) {
+    func getFollowers(username: String, page: Int, perPage: Int = 10) {
         showLoadingView()
         NetworkManager.shared.getFollowers(for: username, page: page, perPage: perPage) {
             [weak self] result in
