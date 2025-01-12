@@ -11,7 +11,7 @@ class SearchVC: UIViewController {
     let logoImageView = UIImageView()
     let usernameTextField = GFTextField()
     let callToActionButton = GFButton(
-        backgroundColor: .systemGreen, title: "Get Followers")
+        backgroundColor: .systemGreen, title: "View Followers")
 
     var isUsernameEntered: Bool {
         guard let text = usernameTextField.text else { return false }
