@@ -40,9 +40,8 @@ enum PersistenceManager {
                         follower.login == favorite.login
                     }
                 }
-                
-                // Bugged.
-                completion(save(favorites: favorites))
+
+                completion(save(favorites: retrievedFavorites))
             case .failure(let error):
                 completion(error)
             }
