@@ -30,9 +30,32 @@ class GFButton: UIButton {
         setTitleColor(.white, for: .normal)
         titleLabel?.font = UIFont.preferredFont(forTextStyle: .headline)
     }
-    
+
     func set(backgroundColor: UIColor, title: String) {
         self.backgroundColor = backgroundColor
         self.setTitle(title, for: .normal)
+    }
+
+    override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
+        super.touchesBegan(touches, with: event)
+        UIView.animate(withDuration: 0.1) {
+            self.backgroundColor = self.backgroundColor?.withAlphaComponent(0.8)
+        }
+    }
+
+    override func touchesEnded(_ touches: Set<UITouch>, with event: UIEvent?) {
+        super.touchesEnded(touches, with: event)
+        UIView.animate(withDuration: 0.1) {
+            self.backgroundColor = self.backgroundColor?.withAlphaComponent(1.0)
+        }
+    }
+
+    override func touchesCancelled(
+        _ touches: Set<UITouch>, with event: UIEvent?
+    ) {
+        super.touchesCancelled(touches, with: event)
+        UIView.animate(withDuration: 0.1) {
+            self.backgroundColor = self.backgroundColor?.withAlphaComponent(1.0)
+        }
     }
 }

@@ -50,6 +50,7 @@ class SearchVC: UIViewController {
         let followerListVC = FollowerListVC()
         followerListVC.username = usernameTextField.text
         followerListVC.title = usernameTextField.text
+        usernameTextField.text = ""
         navigationController?.pushViewController(followerListVC, animated: true)
     }
 
@@ -104,6 +105,18 @@ extension SearchVC: UITextFieldDelegate {
         textField.resignFirstResponder()
         pushFollowerListVC()
         return true
+    }
+    
+    func textFieldDidBeginEditing(_ textField: UITextField) {
+        UIView.animate(withDuration: 0.1) {
+            textField.backgroundColor = .secondarySystemBackground
+        }
+    }
+
+    func textFieldDidEndEditing(_ textField: UITextField) {
+        UIView.animate(withDuration: 0.1) {
+            textField.backgroundColor = .tertiarySystemBackground
+        }
     }
 }
 
