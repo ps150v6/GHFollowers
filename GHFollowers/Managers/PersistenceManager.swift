@@ -60,7 +60,6 @@ enum PersistenceManager {
 
         do {
             let decoder = JSONDecoder()
-            decoder.keyDecodingStrategy = .convertFromSnakeCase
             let favorites = try decoder.decode(
                 [Follower].self, from: favoritesData)
             completion(.success(favorites))
